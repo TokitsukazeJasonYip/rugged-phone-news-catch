@@ -1,3 +1,12 @@
+# RUGGED NEWS
+
+三防手机新品、固件、实测与行业新闻。首批接入 Ulefone、OUKITEL、DOOGEE、AGM Mobile 官方订阅。基于 MIT 许可的 AIHOT 框架，保留原有采集、精选、事件归组、热度、报告和订阅机制。
+
+[本机部署与 VoC 嵌入](integrations/voc/README.md)
+
+<details>
+<summary>上游框架文档</summary>
+
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner-dark.png">
@@ -185,3 +194,5 @@ AIHOT 曾经只是我无数个深夜里，一个很小、很小的念头。
 ## 许可
 
 代码使用 [MIT 许可证](LICENSE)。AIHOT 的名字和 Logo 不在许可范围内。字体有自己的许可，见 [NOTICE](NOTICE)。
+
+</details>

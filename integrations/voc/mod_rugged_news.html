@@ -1,0 +1,25 @@
+<script>
+(() => {
+  const anchor = document.querySelector('[data-page="crawl"]');
+  const parent = document.getElementById('page-crawl');
+  if (!anchor || !parent || typeof switchPage !== 'function') return;
+  const address = 'http://127.0.0.1:3100/';
+  const nav = document.createElement('button');
+  nav.className = 'sb-item';
+  nav.dataset.page = 'rugged-news';
+  nav.textContent = 'RUGGED NEWS';
+  anchor.after(nav);
+  const page = document.createElement('section');
+  page.id = 'page-rugged-news';
+  page.className = 'page';
+  page.innerHTML = '<div class="table-wrap"><div class="table-header"><h2>三防手机行业新闻</h2><a target="_blank" rel="noopener noreferrer">在浏览器打开</a></div><iframe title="RUGGED NEWS" style="width:100%;height:78vh;border:0;display:block"></iframe></div>';
+  page.querySelector('a').href = address;
+  parent.after(page);
+  const frame = page.querySelector('iframe');
+  nav.addEventListener('click', () => {
+    switchPage('rugged-news', nav);
+    document.getElementById('topbarTitle').textContent = 'RUGGED NEWS';
+    if (!frame.hasAttribute('src')) frame.src = address;
+  });
+})();
+</script>
