@@ -1,0 +1,141 @@
+// Phones: the article's own bottom toolbar in place of the tab bar — 收藏,
+// 目录 for long reads (components/ui/OutlineSheet), 分享 and 原文 — sliding away while reading down and
+// back on the way up or at the end; and the sheet of the article's further actions.
+import { useEffect, useState, type ReactNode } from "react";
+import { Sheet } from "../../components/ui/Sheet";
+import { IconBookmark, IconExternal, IconList, IconShare } from "../../components/icons";
+import { useStar } from "../feed/parts";
+import type { FeedItemSummary } from "@aihot/contracts/site";
+import { useT } from "../../lib/i18n";
+
+type Starrable = Pick<FeedItemSummary, "id" | "title" | "summary" | "source" | "publishedAt" | "score" | "selected">;
+
+/** WeChat's in-app browser cannot save downloads: there the article's Markdown is copied and the poster long-pressed instead. */
+export function inWeChat(): boolean {
+  return typeof navigator !== "undefined" && /MicroMessenger/i.test(navigator.userAgent);
+}
+
+/** True while the reader is scrolling down through the page (not near its top or end). */
+function useReadingDown(): boolean {
+  const [down, setDown] = useState(false);
+  useEffect(() => {
+    let last = window.scrollY;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const y = window.scrollY;
+      const end = document.documentElement.scrollHeight - window.innerHeight;
+      if (y < 80 || y > end - 120) {
+        setDown(false);
+        last = y;
+      } else if (Math.abs(y - last) > 12) {
+        // A clear move, not a finger settling: the bar does not flicker in and out on small reversals.
+        setDown(y > last);
+        last = y;
+      }
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+  return down;
+}
+
+function Tool({ icon, label, onClick, href, pressed }: { icon: ReactNode; label: string; onClick?: () => void; href?: string; pressed?: boolean }) {
+  const cls = `flex flex-col items-center justify-center gap-[2px] text-ui-micro-8 transition-[color,opacity] active:opacity-50 disabled:opacity-40 ${pressed ? "font-semibold text-accent" : "text-ink-3"}`;
+  return href ? (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>
+      {icon}
+      {label}
+    </a>
+  ) : (
+    <button type="button" onClick={onClick} disabled={!onClick} aria-pressed={pressed} className={cls}>
+      {icon}
+      {label}
+    </button>
+  );
+}
+
+export function ReaderToolbar({ item, originalUrl, originalLabel, onOutline, onShare }: {
+  item: Starrable;
+  /** Missing while the article is still loading. */
+  originalUrl?: string;
+  originalLabel: string;
+  /** Long reads: opens the outline. */
+  onOutline?: () => void;
+  onShare: () => void;
+}) {
+  const t = useT();
+  const hidden = useReadingDown();
+  const star = useStar(item);
+  return (
+    <nav
+      aria-label={t("阅读工具", "Reading tools")}
+      className={`fixed inset-x-0 bottom-0 z-40 bg-surface/90 pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] shadow-[0_-1px_0_var(--line)] backdrop-blur-xl backdrop-saturate-150 transition-transform duration-(--dur-move) lg:hidden ${hidden ? "translate-y-full" : ""}`}
+    >
+      <div className={`mx-auto grid h-[50px] max-w-[640px] ${onOutline ? "grid-cols-4" : "grid-cols-3"}`}>
+        <Tool
+          pressed={star.on}
+          onClick={star.toggle}
+          label={star.on ? t("已收藏", "Saved") : t("收藏", "Save")}
+          icon={
+            <span key={star.pulse} className={`flex ${star.pulse ? "anim-bump" : ""}`}>
+              <IconBookmark size={22} filled={star.on} />
+            </span>
+          }
+        />
+        {onOutline && <Tool onClick={onOutline} label={t("目录", "Contents")} icon={<IconList size={22} />} />}
+        <Tool onClick={onShare} label={t("分享", "Share")} icon={<IconShare size={22} />} />
+        {originalUrl ? <Tool href={originalUrl} label={originalLabel} icon={<IconExternal size={22} />} /> : <Tool label={originalLabel} icon={<IconExternal size={22} />} />}
+      </div>
+    </nav>
+  );
+}
+
+export interface ActionRow {
+  key: string;
+  label: string;
+  icon: ReactNode;
+  onSelect?: () => void;
+  href?: string;
+  download?: boolean;
+}
+
+/** The article's further actions as a sheet of rows (phones; desktop keeps its menu). */
+export function ActionsSheet({ open, onClose, rows }: { open: boolean; onClose: () => void; rows: ActionRow[] }) {
+  const t = useT();
+  const row = "flex h-[52px] w-full items-center gap-3.5 rounded-tile px-3 text-left text-ui-body-lg text-ink transition-colors active:bg-bg-sunk";
+  return (
+    <Sheet open={open} onClose={onClose} label={t("更多操作", "More actions")}>
+      <ul className="px-2 pt-2">
+        {rows.map((r) => (
+          <li key={r.key}>
+            {r.href ? (
+              <a href={r.href} download={r.download} onClick={onClose} className={row}>
+                <span className="text-ink-3">{r.icon}</span>
+                {r.label}
+              </a>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  r.onSelect?.();
+                }}
+                className={row}
+              >
+                <span className="text-ink-3">{r.icon}</span>
+                {r.label}
+              </button>
+            )}
+          </li>
+        ))}
+      </ul>
+    </Sheet>
+  );
+}
