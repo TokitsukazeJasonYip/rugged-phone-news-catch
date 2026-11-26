@@ -109,7 +109,7 @@ jobs:
           # The smoke check reaches the site by its compose service name.
           echo "MCP_ALLOWED_HOSTS=web" >> .env
       - name: Build and start with docker compose
-        run: docker compose up -d --build
+        run: PORT=3000 docker compose up -d --build
       - name: Smoke check
         run: |
           for i in $(seq 1 90); do curl -fsS -o /dev/null http://127.0.0.1:3000/api/health 2>/dev/null && break; sleep 2; done
