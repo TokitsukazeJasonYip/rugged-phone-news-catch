@@ -24,7 +24,8 @@
       "entityId": "ulefone",
       "aliases": [
         "Ulefone"
-      ]
+      ],
+      "definition": "追踪 Ulefone 的三防手机新品、固件维护、实测及业务变化。"
     },
     {
       "group": "company",
@@ -33,7 +34,8 @@
       "entityId": "oukitel",
       "aliases": [
         "OUKITEL"
-      ]
+      ],
+      "definition": "追踪 OUKITEL 的三防手机新品、固件维护、实测及业务变化。"
     },
     {
       "group": "company",
@@ -42,7 +44,8 @@
       "entityId": "doogee",
       "aliases": [
         "DOOGEE"
-      ]
+      ],
+      "definition": "追踪 DOOGEE 的三防手机新品、固件维护、实测及业务变化。"
     },
     {
       "group": "company",
@@ -51,7 +54,8 @@
       "entityId": "agm",
       "aliases": [
         "AGM Mobile"
-      ]
+      ],
+      "definition": "追踪 AGM Mobile 的三防手机新品、固件维护、实测及业务变化。"
     },
     {
       "group": "company",
@@ -60,7 +64,8 @@
       "entityId": "blackview",
       "aliases": [
         "Blackview"
-      ]
+      ],
+      "definition": "追踪 Blackview 的三防手机新品、固件维护、实测及业务变化。"
     },
     {
       "group": "company",
@@ -69,7 +74,8 @@
       "entityId": "unihertz",
       "aliases": [
         "Unihertz"
-      ]
+      ],
+      "definition": "追踪 Unihertz 的三防手机新品、固件维护、实测及业务变化。"
     },
     {
       "group": "company",
@@ -78,7 +84,8 @@
       "entityId": "rugone",
       "aliases": [
         "RugOne"
-      ]
+      ],
+      "definition": "追踪 RugOne 的三防手机新品、固件维护、实测及业务变化。"
     },
     {
       "group": "company",
@@ -87,7 +94,8 @@
       "entityId": "8849",
       "aliases": [
         "8849"
-      ]
+      ],
+      "definition": "追踪 8849 的三防手机新品、固件维护、实测及业务变化。"
     },
     {
       "group": "field",
@@ -95,7 +103,8 @@
       "name": "续航",
       "tags": [
         "续航"
-      ]
+      ],
+      "definition": "追踪与续航有关的三防手机新闻和实测。"
     },
     {
       "group": "field",
@@ -103,7 +112,8 @@
       "name": "热成像",
       "tags": [
         "热成像"
-      ]
+      ],
+      "definition": "追踪与热成像有关的三防手机新闻和实测。"
     },
     {
       "group": "field",
@@ -111,7 +121,8 @@
       "name": "防护认证",
       "tags": [
         "防护认证"
-      ]
+      ],
+      "definition": "追踪与防护认证有关的三防手机新闻和实测。"
     },
     {
       "group": "field",
@@ -119,7 +130,8 @@
       "name": "系统更新",
       "tags": [
         "系统更新"
-      ]
+      ],
+      "definition": "追踪与系统更新有关的三防手机新闻和实测。"
     },
     {
       "group": "genre",
@@ -127,7 +139,8 @@
       "name": "新品发布",
       "tags": [
         "新品发布"
-      ]
+      ],
+      "definition": "追踪与新品发布有关的三防手机新闻和实测。"
     }
   ]
 }
